@@ -1,5 +1,6 @@
 'use strict';
 
+
 // and hit return or add: $('.js-shopping-list-form button').submit  ...or .on('submit'...)
 $('#js-shopping-list-form').on('submit', function (event) {
   event.preventDefault();
@@ -10,7 +11,7 @@ $('#js-shopping-list-form').on('submit', function (event) {
 // check and uncheck items on the list via check button... in html: $(.'shopping-item-toggle')
 $('.shopping-list').on('click', '.shopping-item-toggle', function (event) {
   $(this).children().toggleClass('shopping-item__checked'); // we ONLY want to change the label of the child of the button that was clicked...
-  $(this).parent().parent().find('.shopping-item').toggleClass('shopping-item__checked');
+  $(this).closest('li').find('.shopping-item').toggleClass('shopping-item__checked');
 });
 // permently remove items from the list... in html: $(.'shopping-item-delete')
 $('.shopping-list').on('click', '.shopping-item-delete', function (event) {
