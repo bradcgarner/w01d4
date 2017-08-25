@@ -40,25 +40,28 @@ function renderShoppingList() {
 }
 
 
-// add items to the list
-function addListItems() {
+// add items to the list *****
+function addListItems(id) {
   // read the user-submitted text (text box in the form)
   // add that text with an ID and with a status to STORE
-  // ID will be the STORE[STORE.length-1].ID+1
+  // ********* ID will be the id of the last item in STORE
+  let id = STORE.length === 0 ? 1 : STORE[STORE.length-1].ID+1 ;
 }
 
 
-// check items off the list
-function checkListItems() {
+// check items off the list *****
+function checkListItems(id) {
   // get the ID # of which item to check off
   // apply a checked class to the item 
   // update the status property in STORE to 'checked' to true
 }
 
 
-// delete items from the list
-function deleteListItems() {
+// delete items from the list *****
+function deleteListItems(id) {
   // get the ID # of which item to delete
+  // ******* filter that ID from the array (return array without that item)
+  let filteredArr = STORE.filter(item => item.id !== id);
   // delete that item from STORE
 }
 
