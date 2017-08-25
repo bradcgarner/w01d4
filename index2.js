@@ -46,6 +46,7 @@ function addListItems(id) {
   // add that text with an ID and with a status to STORE
   // ********* ID will be the id of the last item in STORE
   let id = STORE.length === 0 ? 1 : STORE[STORE.length-1].ID+1 ;
+  // ask TA about where / how to do id generation
 }
 
 
@@ -62,6 +63,7 @@ function deleteListItems(id) {
   // get the ID # of which item to delete
   // ******* filter that ID from the array (return array without that item)
   let filteredArr = STORE.filter(item => item.id !== id);
+  // look at splice instead of ^
   // delete that item from STORE
 }
 
