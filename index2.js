@@ -52,7 +52,6 @@ function addListItems(name) {
     id,
     checked: false
   });
-  console.log(STORE);
   renderShoppingList();
   // ask TA about where / how to do id generation
 }
@@ -60,13 +59,11 @@ function addListItems(name) {
 
 // check items off the list *****
 function checkListItems(id) {
-  console.log(id);
   // get the ID # of which item to check off
   // apply a checked class to the item 
   STORE.find(x => x.id === id).checked = STORE.find(x => x.id === id).checked === false ? true : false;
   // update the status property in STORE to 'checked' to true
   renderShoppingList();
-  console.log(STORE);
 }
 
 
@@ -74,9 +71,11 @@ function checkListItems(id) {
 function deleteListItems(id) {
   // get the ID # of which item to delete
   // ******* filter that ID from the array (return array without that item)
-  let filteredArr = STORE.filter(item => item.id !== id);
+  let indexToDelete = STORE.findIndex(item => item.id === id);
+  STORE.splice(indexToDelete, 1);
   // look at splice instead of ^
   // delete that item from STORE
+  renderShoppingList();
 }
 
 
@@ -95,9 +94,8 @@ function handleAddListItems() {
 function handleCheckListItems() {
   // use jQuery to find the Check button in the DOM
   // assign checkListItems to the Check button .on('click')
-  $('.shopping-item-toggle').on('click', function (event) {
-    console.log($(this).closest('li').data('list-item'));
-  $('.shopping-item-toggle').on('click', checkListItems($(this).closest('li').data('list-item')));
+  $('.shopping-list').on('click', '.shopping-item-toggle', function (event) {
+    checkListItems($(this).closest('li').data('list-item'));
   });
 }
 
@@ -106,6 +104,9 @@ function handleCheckListItems() {
 function handleDeleteListItems() {
   // use jQuery to find the Delete button in the DOM
   // assign deleteListItems to the Delete button .on('click')
+  $('.shopping-list').on('click', '.shopping-item-delete', function (event) {
+    deleteListItems($(this).closest('li').data('list-item'));
+  });
 }
 
 
@@ -114,7 +115,7 @@ function handleShoppingList() {
   renderShoppingList();
   handleAddListItems();
   handleCheckListItems();
-  //handleDeleteListItems();
+  handleDeleteListItems();
 }
 
 //wrap in $() later
