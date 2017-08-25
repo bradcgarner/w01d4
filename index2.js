@@ -11,28 +11,30 @@ const STORE = [
 function newItemHtml(item) {
   let checkedClass = item.checked === true ? 'shopping-item__checked' : '';
   let theNameLine = '';
+  let editButton = '';
+  let checkButton = '';
   if ( item.edit === true ) { 
-    theNameLine = `<form id="js-shopping-list-edit-form">
-    <input type="text" name="shopping-list-edit" class="js-shopping-list-edit" placeholder="${item.name}" value="${item.name}" required>
-    <button type="submit"><label for="shopping-list-edit">Save Edits</label></button>
-  </form>` ;
+    theNameLine = `<input type="text" name="shopping-list-edit" class="js-shopping-list-edit" placeholder="${item.name}" value="${item.name}" required>
+    <button class="shopping-item-save-edit"><label for="shopping-list-edit">Save Edits</label></button>` ;
   } else {
     theNameLine = `<span class="shopping-item ${checkedClass}">${item.name}</span>`;  
+    editButton = `<button class="shopping-item-edit">
+    <span class="button-label">edit</span>
+    </button>`;
+    checkButton = `<button class="shopping-item-toggle">
+    <span class="button-label ${checkedClass}">check</span>
+    </button>`;
   }
   let newHtml =
     `
     <li data-list-item="${item.id}">
     <div class="shopping-item-controls">
     ${theNameLine}
-      <button class="shopping-item-toggle">
-        <span class="button-label ${checkedClass}">check</span>
-      </button>
-      <button class="shopping-item-delete">
-        <span class="button-label">delete</span>
-      </button>
-      <button class="shopping-item-edit">
-      <span class="button-label">edit</span>
+    ${checkButton}
+    <button class="shopping-item-delete">
+    <span class="button-label">delete</span>
     </button>
+    ${editButton}
     </div>
   </li>`;
   return newHtml;
@@ -148,9 +150,8 @@ function handleEditListItems() {
 }
 // add event listener to Delete button
 function handleSaveListItems() {
-  $('.shopping-list').on('submit', '#js-shopping-list-edit-form', function (event) {
+  $('.shopping-list').on('click', '.shopping-item-save-edit', function (event) {
     console.log('???');
-    event.preventDefault();
     saveEditedNames($(this).closest('li').data('list-item'), $('.js-shopping-list-edit').val());
   });
 }
