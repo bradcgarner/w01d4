@@ -1,26 +1,38 @@
 'use strict';
 // store the data in a JS array- not the DOM
 const STORE = [
-  { name: 'apple', id: 1, checked: true },
-  { name: 'banana', id: 2, checked: false },
-  { name: 'peach', id: 3, checked: true }
+  { name: 'apple', id: 1, checked: true, edit: false },
+  { name: 'banana', id: 2, checked: false, edit: false },
+  { name: 'peach', id: 3, checked: true, edit: false }
 ];
 // objects with properties: ID, name, checked
 
 // create HTML for a single li within the ul
 function newItemHtml(item) {
   let checkedClass = item.checked === true ? 'shopping-item__checked' : '';
+  let theNameLine = '';
+  if ( item.edit === true ) { 
+    theNameLine = `<form id="js-shopping-list-edit-form">
+    <input type="text" name="shopping-list-edit" class="js-shopping-list-edit" placeholder="${item.name}" value="${item.name}" required>
+    <button type="submit"><label for="shopping-list-edit">Save Edits</label></button>
+  </form>` ;
+  } else {
+    theNameLine = `<span class="shopping-item ${checkedClass}">${item.name}</span>`;  
+  }
   let newHtml =
     `
     <li data-list-item="${item.id}">
-    <span class="shopping-item ${checkedClass}">${item.name}</span>
     <div class="shopping-item-controls">
+    ${theNameLine}
       <button class="shopping-item-toggle">
         <span class="button-label ${checkedClass}">check</span>
       </button>
       <button class="shopping-item-delete">
         <span class="button-label">delete</span>
       </button>
+      <button class="shopping-item-edit">
+      <span class="button-label">edit</span>
+    </button>
     </div>
   </li>`;
   return newHtml;
@@ -50,7 +62,8 @@ function addListItems(name) {
   STORE.push({
     name,
     id,
-    checked: false
+    checked: false,
+    edit: false
   });
   renderShoppingList();
   // ask TA about where / how to do id generation
@@ -76,6 +89,25 @@ function deleteListItems(id) {
   // look at splice instead of ^
   // delete that item from STORE
   renderShoppingList();
+}
+
+function editListItems(id) {
+  // get the id of the item to edit
+  STORE.find(x => x.id === id).edit = true ;
+  // change the .edit attribute in the STORE to true
+  renderShoppingList();  
+}
+
+function saveEditedNames(id, name) {
+  console.log(name);
+  console.log(id);
+  // get the id of the item that needs a new name
+  // for today... don't worry with data validation...
+  // change the .name attribute in the STORE to the new name
+  STORE.find(x => x.id === id).name = name ;
+  // change the .edit attibute to false
+  STORE.find(x => x.id === id).edit = false ;
+  renderShoppingList();    
 }
 
 
@@ -109,6 +141,19 @@ function handleDeleteListItems() {
   });
 }
 
+function handleEditListItems() {
+  $('.shopping-list').on('click', '.shopping-item-edit', function (event) {
+    editListItems($(this).closest('li').data('list-item'));
+  });
+}
+// add event listener to Delete button
+function handleSaveListItems() {
+  $('.shopping-list').on('submit', '#js-shopping-list-edit-form', function (event) {
+    console.log('???');
+    event.preventDefault();
+    saveEditedNames($(this).closest('li').data('list-item'), $('.js-shopping-list-edit').val());
+  });
+}
 
 // on Document Ready, render the shopping list and add event listeners to DOM
 function handleShoppingList() {
@@ -116,7 +161,8 @@ function handleShoppingList() {
   handleAddListItems();
   handleCheckListItems();
   handleDeleteListItems();
+  handleEditListItems();
+  handleSaveListItems();
 }
 
-//wrap in $() later
-handleShoppingList();
+$(handleShoppingList());
